@@ -120,7 +120,9 @@ const GlobalStyle = () => (
     @media(max-width:1050px){.mob-only-cat{display:block}}
 
     /* ── QUESTION CARD ── */
-    .q-card{background:var(--surf);border:1px solid var(--brd);border-radius:16px;padding:22px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05);cursor:pointer;transition:all .2s}
+    /* z-index:0 prevents hovered cards (which get transform and create a new
+       stacking context) from painting over the CategoryPicker dropdown        */
+    .q-card{background:var(--surf);border:1px solid var(--brd);border-radius:16px;padding:22px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05);cursor:pointer;transition:all .2s;position:relative;z-index:0}
     .q-card:hover{box-shadow:0 10px 28px rgba(0,0,0,.1);border-color:var(--brdS);transform:translateY(-2px)}
 
     /* ── STAFF CARD ── */
@@ -410,8 +412,11 @@ const GlobalStyle = () => (
     }
     .cat-trigger:hover{border-color:#D4AF37;background:rgba(212,175,55,.05)}
     .cat-trigger.open{border-color:#D4AF37;box-shadow:0 0 0 3px rgba(212,175,55,.15)}
+
+    /* FIX: position:absolute so it anchors to the wrapper's position:relative,
+       not the viewport. The wrapper has z-index:9999 which beats q-card's z-index:0 */
     .cat-drop{
-      position:fixed;top:calc(100% + 8px);bottom:auto;left:0;min-width:240px;
+      position:absolute;top:calc(100% + 8px);left:0;min-width:240px;
       background:var(--surf);border:1.5px solid var(--brdS);
       border-radius:16px;box-shadow:0 12px 50px rgba(0,0,0,.22);
       z-index:9999;overflow:hidden;
